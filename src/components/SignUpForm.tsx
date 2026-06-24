@@ -1,4 +1,5 @@
 import { useState, type SyntheticEvent } from "react";
+import { Link } from "react-router-dom";
 
 export default function SignInForm() {
   const [username, setUsername] = useState<string>("");
@@ -74,7 +75,7 @@ export default function SignInForm() {
             />
           </label>
 
-          <div className="flex gap-3">
+          <div className="flex flex-col gap-3">
             <button
               className="w-full cursor-pointer bg-black text-white font-bold rounded-sm p-3 transition-colors border-2 border-white"
               type="submit"
@@ -82,12 +83,12 @@ export default function SignInForm() {
               Sign-Up
             </button>
 
-            <button
-              className="w-full cursor-pointer bg-white text-black font-bold rounded-sm p-3 transition-colors"
-              type="submit"
-            >
-              Log-In
-            </button>
+            <span>
+              Already have an account?{" "}
+              <Link className="font-bold hover:underline" to="/log-in">
+                Log-In
+              </Link>
+            </span>
           </div>
         </form>
       </div>

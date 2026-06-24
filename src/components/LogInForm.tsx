@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router";
 
 export default function LogInForm() {
   const [email, setEmail] = useState<string>("");
@@ -38,20 +39,22 @@ export default function LogInForm() {
             />
           </label>
 
-          <div className="flex gap-3">
-            <button
-              className="w-full cursor-pointer bg-black text-white font-bold rounded-sm p-3 transition-colors border-2 border-white"
-              type="submit"
-            >
-              Sign-Up
-            </button>
+          <div className="flex flex-col gap-3">
+            <Link to="/sign-up" className="w-full">
+              <button
+                className="w-full cursor-pointer bg-black text-white font-bold rounded-sm p-3 transition-colors border-2 border-white"
+                type="submit"
+              >
+                Log-In
+              </button>
+            </Link>
 
-            <button
-              className="w-full cursor-pointer bg-white text-black font-bold rounded-sm p-3 transition-colors"
-              type="submit"
-            >
-              Log-In
-            </button>
+            <span>
+              Don't have an account?{" "}
+              <Link className="font-bold hover:underline" to="/sign-up">
+                Sign-Up
+              </Link>
+            </span>
           </div>
         </form>
       </div>
