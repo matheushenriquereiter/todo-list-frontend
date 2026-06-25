@@ -1,5 +1,6 @@
 import { useState, type SyntheticEvent } from "react";
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export default function SignUpForm() {
   const [username, setUsername] = useState<string>("");
@@ -75,12 +76,37 @@ export default function SignUpForm() {
     return shouldRequest;
   };
 
+  const loginUser = async (email: string, password: string) => {
+    const response = await fetch("http://localhost:8080/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      const jwtToken = data.jwtToken;
+      console.log(jwtToken);
+      Cookies.set("jwtToken", jwtToken);
+      return;
+    }
+
+    const error = await response.json();
+
+    if (error.status === 409) {
+      setEmailError("Email already taken");
+    }
+  };
+
   const registerUser = async (
     username: string,
     email: string,
     password: string,
   ) => {
-    const response = await fetch("http://localhost:8080/users/register", {
+    const response = await fetch("http://localhost:8080/auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -90,7 +116,8 @@ export default function SignUpForm() {
     });
 
     if (response.ok) {
-      return console.log("User has been successfully registered");
+      console.log("User has been successfully registered");
+      return loginUser(email, password);
     }
 
     const error = await response.json();
