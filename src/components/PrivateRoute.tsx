@@ -1,39 +1,38 @@
-import { type SyntheticEvent, useState } from "react";
+import { useState, useEffect, type ReactNode } from "react";
+import { Navigate } from "react-router-dom";
 
-export default function PrivateRoute() {
-  const [user, setUser] = useState<{ username: string; email: string }>();
+type User = {
+  username: string;
+  email: string;
+};
 
-  const isLoggedIn = async () => {
-    const response = await fetch("http://localhost:8080/auth/me", {
-      method: "POST",
+type PrivateRouteProps = {
+  children: ReactNode;
+};
+
+export default function PrivateRoute({ children }: PrivateRouteProps) {
+  const [user, setUser] = useState<User>();
+
+  const requestUser = () => {
+    fetch("/api/auth/me", {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      setUser(data);
-      return;
-    }
-
-    const error = await response.json();
-    console.log(error);
+      credentials: "include",
+    })
+      .then(response => response.json())
+      .then(user => {
+        console.log(user);
+        setUser(user);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
-  const handleSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    await isLoggedIn();
-  };
+  useEffect(requestUser, []);
 
-  return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <button type="submit">Jorge</button>
-      </form>
-
-      {user?.username}
-    </div>
-  );
+  return user ? children : <Navigate to={"/log-in"} />;
 }

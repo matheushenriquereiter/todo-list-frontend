@@ -89,7 +89,6 @@ export default function SignUpForm() {
     if (response.ok) {
       const data = await response.json();
       const jwtToken = data.jwtToken;
-      console.log(jwtToken);
       Cookies.set("jwtToken", jwtToken);
       return;
     }
