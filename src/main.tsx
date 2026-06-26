@@ -4,17 +4,32 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import SignUpPage from "./pages/SignUpPage.tsx";
 import LogInPage from "./pages/LogInPage.tsx";
-import NotFoundPage from "./pages/NotFoundPage.tsx";
 import PrivateRoute from "./components/PrivateRoute.tsx";
+import HomePage from "./pages/HomePage.tsx";
+import AnonymousRoute from "./components/AnonymousRoute.tsx";
 
 const router = createBrowserRouter([
-  { path: "/sign-up", element: <SignUpPage /> },
-  { path: "/log-in", element: <LogInPage /> },
   {
-    path: "*",
+    path: "/sign-up",
+    element: (
+      <AnonymousRoute>
+        <SignUpPage />
+      </AnonymousRoute>
+    ),
+  },
+  {
+    path: "/log-in",
+    element: (
+      <AnonymousRoute>
+        <LogInPage />
+      </AnonymousRoute>
+    ),
+  },
+  {
+    path: "/home",
     element: (
       <PrivateRoute>
-        <NotFoundPage />
+        <HomePage></HomePage>
       </PrivateRoute>
     ),
   },

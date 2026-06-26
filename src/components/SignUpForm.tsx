@@ -1,4 +1,5 @@
 import { useState, type SyntheticEvent } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 
@@ -6,9 +7,12 @@ export default function SignUpForm() {
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+
   const [usernameError, setUsernameError] = useState<string>("");
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
+
+  const navigate = useNavigate();
 
   const validateUsername = (username: string): boolean => {
     if (!username) {
@@ -25,13 +29,12 @@ export default function SignUpForm() {
   };
 
   const validateEmail = (email: string): boolean => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
     if (!email) {
       setEmailError("Email is required");
       return false;
     }
 
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!regex.test(email)) {
       setEmailError("Email must be valid");
       return false;
@@ -77,7 +80,7 @@ export default function SignUpForm() {
   };
 
   const loginUser = async (email: string, password: string) => {
-    const response = await fetch("http://localhost:8080/auth/login", {
+    const response = await fetch("/api/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -90,6 +93,7 @@ export default function SignUpForm() {
       const data = await response.json();
       const jwtToken = data.jwtToken;
       Cookies.set("jwtToken", jwtToken);
+      navigate("/home");
       return;
     }
 
@@ -105,7 +109,7 @@ export default function SignUpForm() {
     email: string,
     password: string,
   ) => {
-    const response = await fetch("http://localhost:8080/auth/register", {
+    const response = await fetch("/api/auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -139,13 +143,14 @@ export default function SignUpForm() {
   };
 
   return (
-    <div className="bg-black w-screen h-screen flex flex-col items-center justify-center gap-4 text-white">
+    <div className="w-screen h-screen flex flex-col items-center justify-center gap-4">
       <div className="flex flex-col w-full max-w-xl gap-3">
         <h1 className="text-2xl font-bold text-center">Daily</h1>
 
         <span className="text-center">The best plan makes the best day</span>
 
         <form
+          noValidate
           onSubmit={handleRegisterFormSubmit}
           className="flex flex-col gap-1 w-full px-4"
         >
@@ -182,7 +187,7 @@ export default function SignUpForm() {
                 }}
                 value={email}
                 placeholder="Enter email"
-                type="email"
+                type="text"
                 name="email"
                 id="email"
               />

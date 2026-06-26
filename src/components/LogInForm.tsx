@@ -6,7 +6,7 @@ export default function LogInForm() {
   const [password, setPassword] = useState<string>("");
 
   return (
-    <div className="bg-black w-screen h-screen flex flex-col items-center justify-center gap-4 text-white">
+    <div className="w-screen h-screen flex flex-col items-center justify-center gap-4">
       <div className="flex flex-col w-full max-w-xl gap-3">
         <h1 className="text-2xl font-bold text-center">Daily</h1>
 

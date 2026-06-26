@@ -10,7 +10,7 @@ type PrivateRouteProps = {
   children: ReactNode;
 };
 
-export default function PrivateRoute({ children }: PrivateRouteProps) {
+export default function AnonymousRoute({ children }: PrivateRouteProps) {
   const [authenticatedUser, setAuthenticatedUser] = useState<User>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -43,5 +43,5 @@ export default function PrivateRoute({ children }: PrivateRouteProps) {
     return <div>Carregando...</div>;
   }
 
-  return authenticatedUser ? children : <Navigate to={"/log-in"} />;
+  return authenticatedUser ? <Navigate to={"/home"} /> : children;
 }
