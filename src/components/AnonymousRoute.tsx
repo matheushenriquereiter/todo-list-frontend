@@ -40,7 +40,7 @@ export default function AnonymousRoute({ children }: PrivateRouteProps) {
   useEffect(requestAuthenticatedUser, []);
 
   if (isLoading) {
-    return <div>Carregando...</div>;
+    return <div className="bg-black w-screen h-screen">Loading...</div>;
   }
 
   return authenticatedUser ? <Navigate to={"/home"} /> : children;

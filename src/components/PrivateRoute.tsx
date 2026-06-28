@@ -1,10 +1,6 @@
 import { useState, useEffect, type ReactNode } from "react";
 import { Navigate } from "react-router-dom";
-
-type User = {
-  username: string;
-  email: string;
-};
+import { type User } from "../types/User";
 
 type PrivateRouteProps = {
   children: ReactNode;
@@ -40,7 +36,7 @@ export default function PrivateRoute({ children }: PrivateRouteProps) {
   useEffect(requestAuthenticatedUser, []);
 
   if (isLoading) {
-    return <div>Carregando...</div>;
+    return <div className="bg-black w-screen h-screen">Loading...</div>;
   }
 
   return authenticatedUser ? children : <Navigate to={"/log-in"} />;

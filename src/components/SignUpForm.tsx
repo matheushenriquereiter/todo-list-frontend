@@ -14,7 +14,7 @@ export default function SignUpForm() {
 
   const navigate = useNavigate();
 
-  const validateUsername = (username: string): boolean => {
+  const validateUsername = (): boolean => {
     if (!username) {
       setUsernameError("Username is required");
       return false;
@@ -28,7 +28,7 @@ export default function SignUpForm() {
     return true;
   };
 
-  const validateEmail = (email: string): boolean => {
+  const validateEmail = (): boolean => {
     if (!email) {
       setEmailError("Email is required");
       return false;
@@ -43,7 +43,7 @@ export default function SignUpForm() {
     return true;
   };
 
-  const validatePassword = (password: string): boolean => {
+  const validatePassword = (): boolean => {
     if (!password) {
       setPasswordError("Password is required");
       return false;
@@ -57,29 +57,25 @@ export default function SignUpForm() {
     return true;
   };
 
-  const validateFields = (
-    username: string,
-    email: string,
-    password: string,
-  ): boolean => {
+  const validateFields = (): boolean => {
     let shouldRequest = true;
 
-    if (!validateUsername(username)) {
+    if (!validateUsername()) {
       shouldRequest = false;
     }
 
-    if (!validateEmail(email)) {
+    if (!validateEmail()) {
       shouldRequest = false;
     }
 
-    if (!validatePassword(password)) {
+    if (!validatePassword()) {
       shouldRequest = false;
     }
 
     return shouldRequest;
   };
 
-  const loginUser = async (email: string, password: string) => {
+  const logIn = async (email: string, password: string) => {
     const response = await fetch("/api/auth/login", {
       method: "POST",
       headers: {
@@ -89,26 +85,15 @@ export default function SignUpForm() {
       body: JSON.stringify({ email, password }),
     });
 
-    if (response.ok) {
-      const data = await response.json();
-      const jwtToken = data.jwtToken;
-      Cookies.set("jwtToken", jwtToken);
-      navigate("/home");
-      return;
-    }
+    if (!response.ok) return;
 
-    const error = await response.json();
-
-    if (error.status === 409) {
-      setEmailError("Email already taken");
-    }
+    const data = await response.json();
+    const jwtToken = data.jwtToken;
+    Cookies.set("jwtToken", jwtToken);
+    navigate("/home");
   };
 
-  const registerUser = async (
-    username: string,
-    email: string,
-    password: string,
-  ) => {
+  const signUp = async () => {
     const response = await fetch("/api/auth/register", {
       method: "POST",
       headers: {
@@ -118,28 +103,25 @@ export default function SignUpForm() {
       body: JSON.stringify({ username, email, password }),
     });
 
-    if (response.ok) {
-      console.log("User has been successfully registered");
-      return loginUser(email, password);
+    if (!response.ok) {
+      const error = await response.json();
+
+      if (error.status === 409) {
+        setEmailError("Email already taken");
+      }
     }
 
-    const error = await response.json();
-
-    if (error.status === 409) {
-      setEmailError("Email already taken");
-    }
+    return logIn(email, password);
   };
 
-  const handleRegisterFormSubmit = async (
+  const handleSignUpFormSubmit = async (
     event: SyntheticEvent<HTMLFormElement>,
   ) => {
     event.preventDefault();
 
-    const shouldRequest = validateFields(username, email, password);
+    if (!validateFields()) return;
 
-    if (!shouldRequest) return;
-
-    registerUser(username, email, password);
+    signUp();
   };
 
   return (
@@ -151,7 +133,7 @@ export default function SignUpForm() {
 
         <form
           noValidate
-          onSubmit={handleRegisterFormSubmit}
+          onSubmit={handleSignUpFormSubmit}
           className="flex flex-col gap-1 w-full px-4"
         >
           <div>

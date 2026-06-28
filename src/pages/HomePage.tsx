@@ -1,21 +1,17 @@
 import { useEffect, useState } from "react";
 import { type SyntheticEvent } from "react";
-
-type Task = {
-  id: number;
-  title: string;
-  description: string;
-};
+import { type Task } from "../types/Task";
 
 export default function HomePage() {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [refresh, setRefresh] = useState<boolean>(false);
+  const [titleError, setTitleError] = useState<string>("");
+  const [descriptionError, setDescriptionError] = useState<string>("");
+
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [refresh, setRefresh] = useState<boolean>(false);
 
-  const createTask = async (event: SyntheticEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
+  const createTask = async () => {
     const response = await fetch("/api/tasks", {
       method: "POST",
       headers: {
@@ -26,17 +22,72 @@ export default function HomePage() {
       body: JSON.stringify({ title, description }),
     });
 
-    if (response.ok) {
-      console.log("Task as been created!");
-      setRefresh(!refresh);
-      return;
+    if (!response.ok) {
+      const error = await response.json();
+
+      return console.error(error);
     }
 
-    const error = await response.json();
-    console.error(error);
+    setRefresh(!refresh);
+    setTitle("");
+    setDescription("");
   };
 
-  useEffect(() => {
+  const validateTitleField = () => {
+    if (!title) {
+      setTitleError("Title is required");
+      return false;
+    }
+
+    if (title.length < 3 || title.length > 50) {
+      setTitleError("Title must be between 3 and 50 characters long");
+      return false;
+    }
+
+    return true;
+  };
+
+  const validateDescriptionField = () => {
+    if (!description) {
+      setDescriptionError("Description is required");
+      return false;
+    }
+
+    if (description.length < 3 || description.length > 50) {
+      setDescriptionError(
+        "Description must be between 3 and 50 characters long",
+      );
+      return false;
+    }
+
+    return true;
+  };
+
+  const validateFields = () => {
+    let shouldSubmit = true;
+
+    if (!validateTitleField()) {
+      shouldSubmit = false;
+    }
+
+    if (!validateDescriptionField()) {
+      shouldSubmit = false;
+    }
+
+    return shouldSubmit;
+  };
+
+  const handleCreateTaskFormSubmit = (
+    event: SyntheticEvent<HTMLFormElement>,
+  ) => {
+    event.preventDefault();
+
+    if (!validateFields()) return;
+
+    createTask();
+  };
+
+  const getTasks = () => {
     fetch("/api/tasks", {
       method: "GET",
       headers: {
@@ -52,7 +103,9 @@ export default function HomePage() {
       .catch(err => {
         console.error(err);
       });
-  }, [refresh]);
+  };
+
+  useEffect(getTasks, [refresh]);
 
   return (
     <div>
@@ -77,7 +130,7 @@ export default function HomePage() {
             </span>
 
             <form
-              onSubmit={createTask}
+              onSubmit={handleCreateTaskFormSubmit}
               className="flex flex-col gap-4 w-full px-4"
             >
               <label htmlFor="title" className="flex flex-col gap-1">
@@ -91,6 +144,9 @@ export default function HomePage() {
                   name="title"
                   id="title"
                 />
+                <span className="block text-red-400 text-sm whitespace-pre-wrap min-h-5">
+                  {titleError}
+                </span>
               </label>
 
               <label htmlFor="description" className="flex flex-col gap-1">
@@ -104,6 +160,9 @@ export default function HomePage() {
                   name="description"
                   id="description"
                 />
+                <span className="block text-red-400 text-sm whitespace-pre-wrap min-h-5">
+                  {descriptionError}
+                </span>
               </label>
 
               <div className="flex flex-col gap-3">
