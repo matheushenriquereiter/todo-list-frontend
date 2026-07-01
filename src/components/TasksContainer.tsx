@@ -2,7 +2,13 @@ import TaskCard from "./TaskCard";
 import { type Task } from "../types/Task";
 import { useEffect, useState } from "react";
 
-export default function TasksContainer({ refresh }: { refresh: boolean }) {
+export default function TasksContainer({
+  refresh,
+  refreshUserTasks,
+}: {
+  refresh: boolean;
+  refreshUserTasks: () => void;
+}) {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const getTasks = () => {
@@ -30,7 +36,11 @@ export default function TasksContainer({ refresh }: { refresh: boolean }) {
       <div className="w-full max-w-7xl flex justify-between items-center">
         <div className="w-full grid grid-cols-2 gap-4">
           {tasks.map((task, index) => (
-            <TaskCard task={task} key={index} />
+            <TaskCard
+              refreshUserTasks={refreshUserTasks}
+              task={task}
+              key={index}
+            />
           ))}
         </div>
       </div>

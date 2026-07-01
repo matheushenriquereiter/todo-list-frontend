@@ -6,14 +6,18 @@ import { useState } from "react";
 export default function HomePage() {
   const [refresh, setRefresh] = useState<boolean>(true);
 
+  const refreshUserTasks = () => {
+    setRefresh(!refresh);
+  };
+
   return (
     <div>
       <Header />
 
       <main>
-        <CreateTaskForm refresh={refresh} setRefresh={setRefresh} />
+        <CreateTaskForm refreshUserTasks={refreshUserTasks} />
 
-        <TasksContainer refresh={refresh} />
+        <TasksContainer refresh={refresh} refreshUserTasks={refreshUserTasks} />
       </main>
     </div>
   );

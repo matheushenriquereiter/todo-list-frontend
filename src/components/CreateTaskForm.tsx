@@ -1,12 +1,10 @@
 import { useState } from "react";
-import { type Dispatch, type SetStateAction, type SyntheticEvent } from "react";
+import { type SyntheticEvent } from "react";
 
 export default function CreateTaskForm({
-  refresh,
-  setRefresh,
+  refreshUserTasks,
 }: {
-  refresh: boolean;
-  setRefresh: Dispatch<SetStateAction<boolean>>;
+  refreshUserTasks: () => void;
 }) {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -30,7 +28,7 @@ export default function CreateTaskForm({
       return console.error(error);
     }
 
-    setRefresh(!refresh);
+    refreshUserTasks();
     setTitle("");
     setDescription("");
   };
