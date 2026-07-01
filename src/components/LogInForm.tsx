@@ -105,7 +105,7 @@ export default function LogInForm() {
             <label htmlFor="email" className="flex flex-col text-lg">
               Email *
               <input
-                className="border bg-white text-black w-full placeholder-gray-500 rounded-sm p-2"
+                className="border bg-white text-black w-full placeholder-gray-500 rounded-lg p-2"
                 onChange={event => {
                   setEmail(event.target.value.trim());
                   setEmailError("");
@@ -126,7 +126,7 @@ export default function LogInForm() {
             <label htmlFor="password" className="flex flex-col text-lg">
               Password *
               <input
-                className="border bg-white text-black w-full placeholder-gray-500 rounded-sm p-2"
+                className="border bg-white text-black w-full placeholder-gray-500 rounded-lg p-2"
                 onChange={event => {
                   setPassword(event.target.value.trim());
                   setPasswordError("");
@@ -145,7 +145,7 @@ export default function LogInForm() {
 
           <div className="flex flex-col gap-3 mt-2">
             <button
-              className="w-full cursor-pointer bg-black text-white font-bold rounded-sm p-3 transition-colors border-2 border-white"
+              className="w-full cursor-pointer bg-black text-white font-bold rounded-lg p-3 transition-colors border-2 border-white"
               type="submit"
             >
               Log-In

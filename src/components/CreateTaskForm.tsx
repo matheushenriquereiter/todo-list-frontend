@@ -29,8 +29,7 @@ export default function CreateTaskForm({
     }
 
     refreshUserTasks();
-    setTitle("");
-    setDescription("");
+    clearForm();
   };
 
   const validateTitleField = () => {
@@ -87,6 +86,11 @@ export default function CreateTaskForm({
     createTask();
   };
 
+  const clearForm = () => {
+    setTitle("");
+    setDescription("");
+  };
+
   return (
     <div className="bg-black flex justify-center">
       <div className="flex flex-col w-full max-w-xl gap-3 py-10">
@@ -108,7 +112,7 @@ export default function CreateTaskForm({
                 setTitleError("");
               }}
               value={title}
-              className="border bg-white text-black w-full placeholder-gray-500 rounded-sm p-2"
+              className="border bg-white text-black w-full placeholder-gray-500 rounded-lg p-2"
               placeholder="Enter title"
               type="text"
               name="title"
@@ -127,7 +131,7 @@ export default function CreateTaskForm({
                 setDescriptionError("");
               }}
               value={description}
-              className="border bg-white text-black w-full placeholder-gray-500 rounded-sm p-2"
+              className="border bg-white text-black w-full placeholder-gray-500 rounded-lg p-2"
               placeholder="Enter description"
               type="text"
               name="description"
@@ -138,12 +142,20 @@ export default function CreateTaskForm({
             </span>
           </label>
 
-          <div className="flex flex-col gap-3 mt-2">
+          <div className="flex gap-3 mt-2">
             <button
-              className="w-full cursor-pointer bg-black text-white font-bold rounded-sm p-3 transition-colors border-2 border-white"
+              className="w-full cursor-pointer bg-black text-white font-bold rounded-lg p-3 transition-colors border-2 border-white"
+              type="reset"
+              onClick={clearForm}
+            >
+              Clear
+            </button>
+
+            <button
+              className="w-full cursor-pointer bg-white text-black font-bold rounded-lg p-3 transition-colors border-2 border-white"
               type="submit"
             >
-              Create
+              Add
             </button>
           </div>
         </form>
