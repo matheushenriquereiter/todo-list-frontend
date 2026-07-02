@@ -90,7 +90,7 @@ export default function SignUpForm() {
     const data = await response.json();
     const jwtToken = data.jwtToken;
     Cookies.set("jwtToken", jwtToken);
-    navigate("/home");
+    navigate("/");
   };
 
   const signUp = async () => {
@@ -107,7 +107,7 @@ export default function SignUpForm() {
       const error = await response.json();
 
       if (error.status === 409) {
-        setEmailError("Email already taken");
+        return setEmailError("Email already taken");
       }
     }
 
@@ -136,7 +136,7 @@ export default function SignUpForm() {
           onSubmit={handleSignUpFormSubmit}
           className="flex flex-col gap-1 w-full px-4"
         >
-          <div>
+          <div className="flex flex-col gap-1">
             <label htmlFor="username" className="flex flex-col text-lg">
               Username *
               <input
@@ -158,7 +158,7 @@ export default function SignUpForm() {
             </span>
           </div>
 
-          <div>
+          <div className="flex flex-col gap-1">
             <label htmlFor="email" className="flex flex-col text-lg">
               Email *
               <input
@@ -179,7 +179,7 @@ export default function SignUpForm() {
             </span>
           </div>
 
-          <div>
+          <div className="flex flex-col gap-1">
             <label htmlFor="password" className="flex flex-col text-lg">
               Password *
               <input

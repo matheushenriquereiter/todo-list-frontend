@@ -1,6 +1,7 @@
 import TasksContainer from "../components/TasksContainer";
 import Header from "../components/Header";
 import CreateTaskForm from "../components/CreateTaskForm";
+import Footer from "../components/Footer";
 import { useState } from "react";
 
 export default function HomePage() {
@@ -11,14 +12,13 @@ export default function HomePage() {
   };
 
   return (
-    <div>
+    <div className="flex flex-col h-screen">
       <Header />
 
-      <main>
-        <CreateTaskForm refreshUserTasks={refreshUserTasks} />
+      <CreateTaskForm refreshUserTasks={refreshUserTasks} />
+      <TasksContainer refresh={refresh} refreshUserTasks={refreshUserTasks} />
 
-        <TasksContainer refresh={refresh} refreshUserTasks={refreshUserTasks} />
-      </main>
+      <Footer />
     </div>
   );
 }

@@ -76,7 +76,7 @@ export default function LogInForm() {
     const data = await response.json();
     const jwtToken = data.jwtToken;
     Cookies.set("jwtToken", jwtToken);
-    navigate("/home");
+    navigate("/");
   };
 
   const handleLoginFormSubmit = async (
@@ -101,7 +101,7 @@ export default function LogInForm() {
           onSubmit={handleLoginFormSubmit}
           className="flex flex-col gap-1 w-full px-4"
         >
-          <div>
+          <div className="flex flex-col gap-1">
             <label htmlFor="email" className="flex flex-col text-lg">
               Email *
               <input
@@ -122,7 +122,7 @@ export default function LogInForm() {
             </span>
           </div>
 
-          <div>
+          <div className="flex flex-col gap-1">
             <label htmlFor="password" className="flex flex-col text-lg">
               Password *
               <input

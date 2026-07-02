@@ -31,9 +31,17 @@ export default function TasksContainer({
 
   useEffect(getTasks, [refresh]);
 
+  if (!tasks.length) {
+    return (
+      <main className="text-lg h-full bg-white text-black flex justify-center py-12 flex-1">
+        No tasks have been created so far... 😭
+      </main>
+    );
+  }
+
   return (
-    <div className="bg-white text-black flex justify-center py-6">
-      <div className="w-full max-w-7xl flex justify-between items-center">
+    <main className="h-full bg-white text-black flex justify-center py-12 flex-1">
+      <div className="w-full max-w-7xl ">
         <div className="w-full grid grid-cols-2 gap-4">
           {tasks.map((task, index) => (
             <TaskCard
@@ -44,6 +52,6 @@ export default function TasksContainer({
           ))}
         </div>
       </div>
-    </div>
+    </main>
   );
 }
