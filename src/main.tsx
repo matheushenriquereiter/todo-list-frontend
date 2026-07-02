@@ -7,6 +7,7 @@ import LogInPage from "./pages/LogInPage.tsx";
 import PrivateRoute from "./components/PrivateRoute.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import AnonymousRoute from "./components/AnonymousRoute.tsx";
+import Browse from "./pages/Browse.tsx";
 
 const router = createBrowserRouter([
   {
@@ -29,7 +30,15 @@ const router = createBrowserRouter([
     path: "/",
     element: (
       <PrivateRoute>
-        <HomePage></HomePage>
+        <HomePage />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/browse",
+    element: (
+      <PrivateRoute>
+        <Browse />
       </PrivateRoute>
     ),
   },

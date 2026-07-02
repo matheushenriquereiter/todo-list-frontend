@@ -90,7 +90,7 @@ export default function LogInForm() {
   };
 
   return (
-    <div className="w-screen h-screen flex flex-col items-center justify-center gap-4">
+    <div className="w-screen h-screen flex flex-col items-center justify-center gap-4 bg-black text-white">
       <div className="flex flex-col w-full max-w-xl gap-3">
         <h1 className="text-2xl font-bold text-center">Daily</h1>
 
